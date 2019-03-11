@@ -17,7 +17,10 @@ WHERE ChessType LIKE 'k%'
 GO
 
 -- 3)
-
+SELECT ChessType, Count(*) AS TypeCount FROM ChessCore.Chessmen
+GROUP BY ChessType
+ORDER BY TypeCount DESC
+GO
 
 -- 4)
 SELECT ChessmanId FROM ChessCore.Chessboard, ChessCore.Chessmen
