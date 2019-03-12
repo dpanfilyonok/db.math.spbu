@@ -23,8 +23,45 @@ ORDER BY TypeCount DESC
 GO
 
 -- 4)
-SELECT ChessmanId FROM ChessCore.Chessboard, ChessCore.Chessmen
-WHERE ChessCore.Chessboard.ChessmanId = ChessCore.Chessmen.Id
+SELECT ChessmanId FROM ChessCore.Chessboard INNER JOIN ChessCore.Chessmen
+ON ChessCore.Chessboard.ChessmanId = ChessCore.Chessmen.Id
 AND ChessColor = 'white'
 AND ChessType = 'pawn'
 GO
+
+-- 5)
+
+
+-- 6)
+SELECT ChessColor, Count(*) AS FigureAmount FROM ChessCore.Chessboard INNER JOIN ChessCore.Chessmen
+ON ChessCore.Chessboard.ChessmanId = ChessCore.Chessmen.Id
+GROUP BY ChessColor
+GO
+
+-- 7)
+SELECT DISTINCT ChessType FROM ChessCore.Chessboard INNER JOIN ChessCore.Chessmen
+ON ChessCore.Chessboard.ChessmanId = ChessCore.Chessmen.Id
+AND ChessColor = 'black'
+GO
+
+-- 8)
+SELECT DISTINCT ChessType, Count(*) AS FigureAmount FROM ChessCore.Chessboard INNER JOIN ChessCore.Chessmen
+ON ChessCore.Chessboard.ChessmanId = ChessCore.Chessmen.Id
+AND ChessColor = 'black'
+GROUP BY ChessType
+GO
+
+-- 9)
+SELECT DISTINCT ChessType FROM ChessCore.Chessboard INNER JOIN ChessCore.Chessmen
+ON ChessCore.Chessboard.ChessmanId = ChessCore.Chessmen.Id
+GROUP BY ChessType
+HAVING COUNT(*) >= 2
+
+-- 10)
+SELECT TOP 1 WITH TIES ChessColor  FROM ChessCore.Chessboard INNER JOIN ChessCore.Chessmen
+ON ChessCore.Chessboard.ChessmanId = ChessCore.Chessmen.Id
+GROUP BY ChessColor
+ORDER BY COUNT(*)
+GO
+
+-- 12)

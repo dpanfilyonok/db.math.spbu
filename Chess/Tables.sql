@@ -26,6 +26,7 @@ CREATE TABLE ChessCore.Chessboard
 (
     ChessmanId INT NOT NULL PRIMARY KEY REFERENCES ChessCore.Chessmen(Id),
     X NCHAR NOT NULL CHECK(X >= 'a' AND X <= 'h'),
-    Y NCHAR NOT NULL CHECK(Y >= '1' AND Y <= '8')
+    Y NCHAR NOT NULL CHECK(Y >= '1' AND Y <= '8'),
+    UNIQUE(X, Y)
 );
 GO
