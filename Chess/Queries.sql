@@ -7,11 +7,6 @@ GO
 SELECT * FROM ChessCore.Chessboard
 GO
 
-CREATE VIEW ChessSummary AS 
-SELECT * FROM ChessCore.Chessboard INNER JOIN ChessCore.Chessmen
-ON ChessCore.Chessboard.ChessmanId = ChessCore.Chessmen.Id
-GO
-
 SELECT ASCII('a');
 SELECT ASCII('1');
 GO
@@ -68,22 +63,6 @@ ORDER BY COUNT(*)
 GO
 
 -- 11)
-CREATE FUNCTION GetFigureCoordinates(@chessType NVARCHAR(40), @chessColor NVARCHAR(40))
-RETURNS TABLE AS
-RETURN (
-    SELECT X, Y FROM ChessSummary
-    WHERE ChessType = @chessType AND ChessColor = @chessColor
-)
-GO
-
-CREATE FUNCTION GetFigureOnRookWay(@x NCHAR, @y NCHAR)
-RETURNS TABLE AS 
-RETURN (
-    SELECT ChessType, ChessColor FROM ChessSummary
-    WHERE X = @x OR Y = @y
-)
-GO
-
 SELECT DISTINCT ChessType, ChessColor FROM dbo.GetFigureCoordinates('rook', 'white') coord
 CROSS APPLY dbo.GetFigureOnRookWay(coord.X, coord.Y)
 GO
