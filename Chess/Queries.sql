@@ -66,3 +66,36 @@ GO
 SELECT DISTINCT ChessType, ChessColor FROM dbo.GetFigureCoordinates('rook', 'white') coord
 CROSS APPLY dbo.GetFigureOnRookWay(coord.X, coord.Y)
 GO
+
+-- 12)
+SELECT ChessColor FROM ChessSummary
+WHERE ChessType = 'pawn'
+GROUP BY ChessColor 
+HAVING COUNT(*) = 8
+GO
+
+-- 14)
+DECLARE @kingCoords1 ChessCore.Coordinates
+INSERT INTO @kingCoords1
+    SELECT * FROM dbo.GetFigureCoordinates('king', 'black')
+DECLARE @xk1 NCHAR, @yk1 NCHAR
+SET @xk1 = (SELECT TOP 1 X FROM @kingCoords1)
+SET @yk1 = (SELECT TOP 1 Y FROM @kingCoords1)
+
+SELECT * FROM ChessSummary
+WHERE ABS(ASCII(@xk1) - ASCII(X)) <= 2 
+AND ABS(ASCII(@yk1) - ASCII(Y)) <= 2
+GO
+
+-- 15)
+DECLARE @kingCoords ChessCore.Coordinates
+INSERT INTO @kingCoords
+    SELECT * FROM dbo.GetFigureCoordinates('king', 'white')
+DECLARE @xk NCHAR, @yk NCHAR
+SET @xk = (SELECT TOP 1 X FROM @kingCoords)
+SET @yk = (SELECT TOP 1 Y FROM @kingCoords)
+
+SELECT TOP 1 WITH TIES *, dbo.L1Distance(@xk, @yk, X, Y) AS Distance FROM ChessSummary
+WHERE dbo.L1Distance(@xk, @yk, X, Y) > 0
+ORDER BY Distance
+GO
