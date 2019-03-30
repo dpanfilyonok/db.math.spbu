@@ -1,11 +1,6 @@
 USE Chess;
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'ChessCore')
-BEGIN
-EXEC('CREATE SCHEMA ChessCore')
-END
-
 IF OBJECT_ID('ChessCore.Chessboard', 'U') IS NOT NULL
 DROP TABLE ChessCore.Chessboard
 GO

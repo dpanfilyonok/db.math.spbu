@@ -1,49 +1,45 @@
 USE Chess
 GO
 
-IF object_id('ChessCore.GetFigureCoordinates', 'IF') IS NOT NULL
-    DROP FUNCTION ChessCore.GetFigureCoordinates
+IF object_id('Tasks.GetFigureCoordinates', 'IF') IS NOT NULL
+    DROP FUNCTION Tasks.GetFigureCoordinates
 GO
-
-CREATE FUNCTION ChessCore.GetFigureCoordinates(@chessType NVARCHAR(40), @chessColor NVARCHAR(40))
+CREATE FUNCTION Tasks.GetFigureCoordinates(@chessType NVARCHAR(40), @chessColor NVARCHAR(40))
 RETURNS TABLE AS
 RETURN (
-    SELECT X, Y FROM ChessSummary
+    SELECT X, Y FROM ChessCore.ChessSummary
     WHERE ChessType = @chessType AND ChessColor = @chessColor
 )
 GO
 
-IF object_id('ChessCore.GetFigureOnRookWay', 'IF') IS NOT NULL
-    DROP FUNCTION ChessCore.GetFigureOnRookWay
+IF object_id('Tasks.GetFigureOnRookWay', 'IF') IS NOT NULL
+    DROP FUNCTION Tasks.GetFigureOnRookWay
 GO
-
-CREATE FUNCTION ChessCore.GetFigureOnRookWay(@x NCHAR, @y NCHAR)
+CREATE FUNCTION Tasks.GetFigureOnRookWay(@xRookCoord NCHAR, @yRookCoord NCHAR)
 RETURNS TABLE AS 
 RETURN (
-    SELECT ChessType, ChessColor FROM ChessSummary
-    WHERE X = @x OR Y = @y
+    SELECT ChessType, ChessColor FROM ChessCore.ChessSummary
+    WHERE X = @xRookCoord OR Y = @yRookCoord
 )
 GO
 
-IF object_id('L1Distance', 'FN') IS NOT NULL
-    DROP FUNCTION L1Distance
+IF object_id('Tasks.L1Distance', 'FN') IS NOT NULL
+    DROP FUNCTION Tasks.L1Distance
 GO
-
-CREATE FUNCTION L1Distance(@p1x NCHAR, @p1y NCHAR, @p2x NCHAR, @p2y NCHAR)
+CREATE FUNCTION Tasks.L1Distance(@p1x NCHAR, @p1y NCHAR, @p2x NCHAR, @p2y NCHAR)
 RETURNS INT AS
 BEGIN    
     RETURN ABS(ASCII(@p1X) - ASCII(@p2x)) + ABS(ASCII(@p1y) - ASCII(@p2y))
 END
 GO
 
-IF object_id('GetFiguresInNeighbourhood', 'IF') IS NOT NULL
-    DROP FUNCTION GetFiguresInNeighbourhood
+IF object_id('Tasks.GetFiguresInNeighbourhood', 'IF') IS NOT NULL
+    DROP FUNCTION Tasks.GetFiguresInNeighbourhood
 GO
-
-CREATE FUNCTION GetFiguresInNeighbourhood(@xCenter NCHAR, @yCenter NCHAR, @radius INT)
+CREATE FUNCTION Tasks.GetFiguresInNeighbourhood(@xCenter NCHAR, @yCenter NCHAR, @radius INT)
 RETURNS TABLE AS
 RETURN (
-    SELECT *, dbo.L1Distance(@xCenter, @yCenter, X, Y) AS Distance FROM ChessSummary
-    WHERE dbo.L1Distance(@xCenter, @yCenter, X, Y) <= @radius
+    SELECT *, Tasks.L1Distance(@xCenter, @yCenter, X, Y) AS Distance FROM ChessCore.ChessSummary
+    WHERE Tasks.L1Distance(@xCenter, @yCenter, X, Y) <= @radius
 )  
 GO
