@@ -12,3 +12,9 @@ BEGIN
     EXEC('CREATE SCHEMA Tasks')
 END
 GO
+
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'Logging')
+BEGIN
+    EXEC('CREATE SCHEMA Logging')
+END
+GO
