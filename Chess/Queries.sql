@@ -28,7 +28,10 @@ X = расширенная хранимая процедура;
 IT = внутренняя таблица
 */
 SELECT * FROM sys.objects
-WHERE type = 'TR'
+WHERE type = 'U'
+GO
+
+SELECT * FROM tempdb.sys.tables
 GO
 
 SELECT * FROM sys.schemas
@@ -101,6 +104,38 @@ SELECT ChessColor FROM ChessCore.ChessSummary
 WHERE ChessType = 'pawn'
 GROUP BY ChessColor 
 HAVING COUNT(*) = 8
+GO
+
+-- 13)
+IF OBJECT_ID(N'tempdb.dbo.#board1') IS NOT NULL
+    DROP TABLE #board1
+CREATE TABLE #board1
+(
+    ChessmanId INT PRIMARY KEY,
+    X NCHAR NOT NULL CHECK(X >= 'a' AND X <= 'h'),
+    Y NCHAR NOT NULL CHECK(Y >= '1' AND Y <= '8'),
+    UNIQUE(X, Y)
+);
+
+INSERT #board1 (ChessmanId, X, Y) VALUES (16, 'e', '1')
+INSERT #board1 (ChessmanId, X, Y) VALUES (32, 'e', '8')
+INSERT #board1 (ChessmanId, X, Y) VALUES (13, 'a', '1') 
+INSERT #board1 (ChessmanId, X, Y) VALUES (14, 'a', '8') 
+
+IF OBJECT_ID(N'tempdb.dbo.#board2') IS NOT NULL
+    DROP TABLE #board2
+SELECT * INTO #board2 FROM #board1
+
+DELETE FROM #board2  
+    WHERE X = 'a' AND Y = '8'
+UPDATE #board2
+    SET Y = '8'
+    WHERE X = 'a' AND Y = '1'
+
+SELECT b1.ChessmanId 
+FROM #board1 b1 FULL OUTER JOIN #board2 b2
+ON b1.ChessmanId = b2.ChessmanId
+WHERE b1.ChessmanId IS NULL OR b2.ChessmanId IS NULL 
 GO
 
 -- 14)
