@@ -33,7 +33,7 @@ GO
 CREATE TABLE Logging.MoveHistory
 (
     Id INT IDENTITY PRIMARY KEY,
-    ChessanId INT NOT NULL REFERENCES ChessCore.Chessmen(Id),
+    ChessmanId INT NOT NULL REFERENCES ChessCore.Chessmen(Id),
     MoveInfo NVARCHAR(200) NOT NULL,
     [Time] DATETIME NOT NULL DEFAULT GETDATE()
 );

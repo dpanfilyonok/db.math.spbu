@@ -28,7 +28,7 @@ X = расширенная хранимая процедура;
 IT = внутренняя таблица
 */
 SELECT * FROM sys.objects
-WHERE type = 'V'
+WHERE type = 'TR'
 GO
 
 SELECT * FROM sys.schemas
