@@ -26,7 +26,7 @@ BEGIN
     ELSE
         IF (SELECT ChessColor FROM ChessCore.ChessSummary WHERE Id = @fromId) = 
         (SELECT ChessColor FROM ChessCore.ChessSummary WHERE Id = @toId)
-            THROW 50001, 'abc', 1
+            THROW 54321, 'Cannot it samecolor figure', 1
         ELSE
             DELETE FROM ChessCore.Chessboard WHERE ChessmanId = @toId
             UPDATE ChessCore.Chessboard
