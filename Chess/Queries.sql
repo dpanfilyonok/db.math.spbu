@@ -31,8 +31,8 @@ SELECT * FROM sys.objects
 WHERE type = 'U'
 GO
 
-SELECT * FROM tempdb.sys.tables
-GO
+-- SELECT * FROM tempdb.sys.tables
+-- GO
 
 SELECT * FROM sys.schemas
 GO
@@ -107,7 +107,7 @@ HAVING COUNT(*) = 8
 GO
 
 -- 13)
-IF OBJECT_ID(N'tempdb.dbo.#board1') IS NOT NULL
+IF OBJECT_ID('tempdb.dbo.#board1') IS NOT NULL
     DROP TABLE #board1
 CREATE TABLE #board1
 (
@@ -120,9 +120,9 @@ CREATE TABLE #board1
 INSERT #board1 (ChessmanId, X, Y) VALUES (16, 'e', '1')
 INSERT #board1 (ChessmanId, X, Y) VALUES (32, 'e', '8')
 INSERT #board1 (ChessmanId, X, Y) VALUES (13, 'a', '1') 
-INSERT #board1 (ChessmanId, X, Y) VALUES (14, 'a', '8') 
+INSERT #board1 (ChessmanId, X, Y) VALUES (25, 'a', '8') 
 
-IF OBJECT_ID(N'tempdb.dbo.#board2') IS NOT NULL
+IF OBJECT_ID('tempdb.dbo.#board2') IS NOT NULL
     DROP TABLE #board2
 SELECT * INTO #board2 FROM #board1
 
@@ -132,10 +132,7 @@ UPDATE #board2
     SET Y = '8'
     WHERE X = 'a' AND Y = '1'
 
-SELECT b1.ChessmanId 
-FROM #board1 b1 FULL OUTER JOIN #board2 b2
-ON b1.ChessmanId = b2.ChessmanId
-WHERE b1.ChessmanId IS NULL OR b2.ChessmanId IS NULL 
+SELECT * FROM #board1 EXCEPT SELECT * FROM #board2
 GO
 
 -- 14)
