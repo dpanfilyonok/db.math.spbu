@@ -19,7 +19,7 @@ BEGIN
             WHERE X = @xTo AND Y = @yTo
         )
 
-    IF @toId = NULL 
+    IF @toId IS NULL 
         UPDATE ChessCore.Chessboard
             SET X = @xTo, Y = @yTo
             WHERE ChessmanId = @fromId

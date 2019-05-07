@@ -8,7 +8,8 @@ CREATE TRIGGER ChessCore.LogPieceEatingOnChessboard ON ChessCore.Chessboard
 AFTER DELETE AS
     INSERT INTO Logging.MoveHistory (ChessmanId, MoveInfo)
         SELECT ChessmanId, ChessColor + ' ' + ChessType + ' on ' + deleted.X + deleted.Y + ' was eaten'
-        FROM deleted CROSS JOIN ChessCore.Chessmen
+        FROM deleted INNER JOIN ChessCore.Chessmen
+        ON ChessmanId = Id
 GO
 
 IF OBJECT_ID('ChessCore.LogMoveOnChessboard', 'TR') IS NOT NULL
